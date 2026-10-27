@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MemoryRAG</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">M</span>
+      <div>
+        <h1>MemoryRAG</h1>
+        <p>Documents + long-term memory, in one assistant</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div id="chips" class="chips" aria-live="polite"></div>
+      <button id="guideBtn" class="btn">Demo guide</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- Left: conversations and documents -->
+    <aside class="panel side">
+      <section>
+        <div class="section-head">
+          <h2>Conversations</h2>
+          <button id="newConvBtn" class="btn btn-primary btn-sm">+ New</button>
+        </div>
+        <ul id="convList" class="list"></ul>
+        <p id="convEmpty" class="muted small">No conversations yet. Click "+ New", or just type a message.</p>
+      </section>
+
+      <section>
+        <div class="section-head"><h2>Documents</h2></div>
+        <label id="dropzone" class="dropzone">
+          <input id="fileInput" type="file" accept=".txt,.md,.pdf" multiple hidden>
+          <strong>Drop .txt / .md / .pdf files</strong>
+          <span class="muted small">or click to browse</span>
+        </label>
+        <button id="sampleBtn" class="btn btn-sm btn-block">Load sample document</button>
+        <ul id="docList" class="list"></ul>
+        <p id="docEmpty" class="muted small">No documents indexed yet.</p>
+      </section>
+    </aside>
+
+    <!-- Centre: chat -->
+    <section class="panel chat">
+      <div class="chat-head">
+        <h2 id="chatTitle">Chat</h2>
+        <span id="chatId" class="muted small"></span>
+      </div>
+      <div id="messages" class="messages" aria-live="polite">
+        <div class="empty-state" id="chatEmpty">
+          <h3>Ask anything</h3>
+          <p>Answers use your uploaded documents <em>and</em> what the assistant remembers from earlier conversations.</p>
+          <p class="muted small">Not sure where to start? Open the <strong>Demo guide</strong>.</p>
+        </div>
+      </div>
+      <form id="composer" class="composer">
+        <textarea id="input" rows="2" maxlength="4000" placeholder="Type a message… (Enter to send, Shift+Enter for a new line)"></textarea>
+        <button id="sendBtn" class="btn btn-primary" type="submit">Send</button>
+      </form>
+    </section>
+
+    <!-- Right: what the assistant used + memory search -->
+    <aside class="panel side">
+      <section>
+        <div class="section-head"><h2>Behind the last answer</h2></div>
+        <div id="insights" class="insights">
+          <p class="muted small">Send a message to see which documents and memories were used.</p>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head"><h2>Long-term memory</h2></div>
+        <form id="memoryForm" class="memory-form">
+          <input id="memoryQuery" type="search" maxlength="200" placeholder="Search memory, e.g. Ahmed">
+          <button class="btn btn-sm" type="submit">Search</button>
+        </form>
+        <div id="memoryResults" class="memory-results"></div>
+      </section>
+    </aside>
+  </main>
+
+  <dialog id="guide" class="guide">
+    <form method="dialog" class="guide-head">
+      <h2>Demo guide: memory across conversations</h2>
+      <button class="btn btn-sm" aria-label="Close">Close</button>
+    </form>
+    <ol class="steps">
+      <li>
+        <strong>Add a document</strong> (optional): click <em>Load sample document</em> on the left.
+      </li>
+      <li>
+        <strong>Tell the assistant something about yourself</strong> in a conversation:
+        <button class="prompt" data-prompt="My name is Ahmed and I'm leading Project Atlas, a satellite imaging platform for flood monitoring.">Use this message</button>
+      </li>
+      <li>
+        <strong>Watch the memory badge</strong> in "Behind the last answer". NAMS extracts entities in the background;
+        wait until it says <em>Saved to long-term memory</em> (seconds to about a minute).
+      </li>
+      <li>
+        <strong>Search memory</strong> on the right for <em>Ahmed</em> to see what was extracted.
+      </li>
+      <li>
+        <strong>Click "+ New"</strong> to start a completely fresh conversation (no shared history), then ask:
+        <button class="prompt" data-prompt="Which project am I working on?">Which project am I working on?</button>
+        <button class="prompt" data-prompt="What does Project Atlas do and who leads it?">What does Project Atlas do?</button>
+      </li>
+    </ol>
+    <p class="muted small">The assistant can answer the new conversation's question only because NAMS remembered it from the first one.</p>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

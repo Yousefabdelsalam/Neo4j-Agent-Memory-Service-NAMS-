@@ -1,0 +1,12 @@
+# Versions below are the ones this project was built and tested with (Python 3.14).
+fastapi==0.162.0
+uvicorn[standard]==0.54.0
+python-multipart==0.0.32      # needed by FastAPI for file uploads
+pydantic-settings==2.16.1
+langgraph==1.2.17
+chromadb==1.5.9
+neo4j-agent-memory[nams]==0.7.0   # the NAMS SDK; [nams] pulls in httpx
+pypdf==6.21.2                     # PDF text extraction
+openai==3.37.0                    # used for BOTH chat and embeddings (OpenAI-compatible)
+pytest==9.1.1
+httpx==0.28.1                     # FastAPI TestClient
